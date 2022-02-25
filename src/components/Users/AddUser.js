@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Card from "../UI/Card";
 import classes from "./AddUser.module.css";
 import Button from "./../UI/Button";
@@ -6,20 +6,21 @@ import ErrorModal from "../UI/ErrorModal";
 import Wraper from "./../Helpers/Wraper";
 
 const AddUser = (props) => {
-  const [enteredUserName, setEnteredUserName] = useState("");
+  const entereName = useRef();
+  //const [enteredUserName, setEnteredUserName] = useState("");
   const [enteredAge, setEnteredAge] = useState("");
   const [error, setError] = useState();
 
-  const userNameChangeHandler = (event) => {
-    setEnteredUserName(event.target.value);
-  };
+  // const userNameChangeHandler = (event) => {
+  //   setEnteredUserName(event.target.value);
+  // };
   const ageChangeHandler = (event) => {
     setEnteredAge(event.target.value);
   };
 
   const AddUserHandler = (event) => {
     event.preventDefault();
-
+    const enteredUserName = entereName.current.value;
     if (enteredUserName.trim().length === 0 || enteredAge.trim().length === 0) {
       setError({
         title: "Invalid input",
@@ -36,7 +37,8 @@ const AddUser = (props) => {
     }
 
     props.onAddUser(enteredUserName, enteredAge);
-    setEnteredUserName("");
+    //setEnteredUserName("");
+    entereName.current.value = "";
     setEnteredAge("");
   };
 
@@ -59,9 +61,8 @@ const AddUser = (props) => {
           <input
             type="text"
             id="username"
-            onChange={userNameChangeHandler}
-            value={enteredUserName}
             autoComplete="false"
+            ref={entereName}
           ></input>
 
           <label>Age</label>
